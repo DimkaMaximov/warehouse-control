@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="liga.warehouse.warehousecontrol.repository.ProductRepository">
+
+    <resultMap id="product" type="liga.warehouse.warehousecontrol.model.Product" autoMapping="true">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="product">
+        SELECT *
+        FROM product_list ORDER BY id;
+    </select>
+
+    <select id="findById" resultMap="product">
+        SELECT *
+        FROM product_list
+        WHERE id = #{productId};
+    </select>
+
+    <select id="findAllByProductType" resultMap="product">
+        SELECT *
+        FROM product_list
+        WHERE  product_type= #{productType};
+    </select>
+
+    <insert id="insertAll" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO product_list (product_name, product_type, product_cod, country,
+                                  supplier_id, unit, amount, price)
+        VALUES
+        <foreach collection="productList" item="product" separator=",">
+            (#{product.productName}, #{product.productType}, #{product.productCod}, #{product.country},
+            #{product.supplierId}, #{product.unit}, #{product.amount}, #{product.price})
+        </foreach>
+    </insert>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO product_list (product_name, product_type, product_cod, country,
+                                  supplier_id, unit, amount, price)
+        VALUES (#{productName}, #{productType}, #{productCod}, #{country},
+                #{supplierId}, #{unit}, #{amount}, #{price});
+    </insert>
+
+    <update id="updateById" parameterType="liga.warehouse.warehousecontrol.model.Product">
+        <if test="prodict.id != null">
+            UPDATE product_list SET
+            <if test="prodict.productName != null">
+                product_name = #{product.productName}
+            </if>
+            <if test="prodict.productType != null">
+                product_type = #{product.productType}
+            </if>
+            <if test="prodict.productCod != null">
+                product_cod = #{product.productCod}
+            </if>
+            <if test="prodict.country != null">
+                country = #{product.country}
+            </if>
+            <if test="prodict.supplierId != null">
+                supplier_id = #{product.supplierId}
+            </if>
+            <if test="prodict.unit != null">
+                unit = #{product.unit}
+            </if>
+            <if test="prodict.amount != null">
+                amount = #{product.amount}
+            </if>
+            <if test="prodict.price != null">
+                price = #{product.price}
+            </if>
+            WHERE id = #{prodict.id};
+        </if>
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM product_list
+        WHERE id = #{productId, jdbcType=BIGINT};
+    </delete>
+</mapper>
