@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS log_events;
+DROP SEQUENCE IF EXISTS log_events_seq;
