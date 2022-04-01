@@ -3,7 +3,6 @@ package liga.warehouse.warehousecontrol.repository;
 import liga.warehouse.warehousecontrol.model.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 @Mapper

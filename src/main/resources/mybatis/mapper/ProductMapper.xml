@@ -41,33 +41,33 @@
     </insert>
 
     <update id="updateById" parameterType="liga.warehouse.warehousecontrol.model.Product">
-        <if test="prodict.id != null">
+        <if test="product.id != null">
             UPDATE product_list SET
-            <if test="prodict.productName != null">
+            <if test="product.productName != null">
                 product_name = #{product.productName}
             </if>
-            <if test="prodict.productType != null">
+            <if test="product.productType != null">
                 product_type = #{product.productType}
             </if>
-            <if test="prodict.productCod != null">
+            <if test="product.productCod != null">
                 product_cod = #{product.productCod}
             </if>
-            <if test="prodict.country != null">
+            <if test="product.country != null">
                 country = #{product.country}
             </if>
-            <if test="prodict.supplierId != null">
+            <if test="product.supplierId != null">
                 supplier_id = #{product.supplierId}
             </if>
-            <if test="prodict.unit != null">
+            <if test="product.unit != null">
                 unit = #{product.unit}
             </if>
-            <if test="prodict.amount != null">
+            <if test="product.amount != null">
                 amount = #{product.amount}
             </if>
-            <if test="prodict.price != null">
+            <if test="product.price != null">
                 price = #{product.price}
             </if>
-            WHERE id = #{prodict.id};
+            WHERE id = #{product.id};
         </if>
     </update>
 
