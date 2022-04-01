@@ -1,8 +1,7 @@
 package liga.warehouse.warehousecontrol.aop;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import liga.warehouse.warehousecontrol.model.LogEntity;
+import liga.warehouse.warehousecontrol.model.UserEntity;
 import liga.warehouse.warehousecontrol.repository.LogEntityRepository;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -11,6 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
@@ -28,26 +28,26 @@ public class LoggingAdvice {
     }
 
     @Around("controllersPc()")
-    public Object controllersLogging(ProceedingJoinPoint pjp)  throws JsonProcessingException {
+    public Object controllersLogging(ProceedingJoinPoint pjp){
 
         LocalDateTime eventTime = LocalDateTime.now();
         String methodName = pjp.getSignature().getName();
         String className = pjp.getTarget().getClass().toString();
 
-        ObjectMapper mapper = new ObjectMapper();
-        Object[] array = pjp.getArgs();
-        String args = mapper.writeValueAsString(array);
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
 
         LogEntity logEntity = LogEntity.builder()
                 .eventTime(eventTime)
                 .methodName(methodName)
                 .className(className)
-                .args(args)
+                .args(user.getEmail())
                 .build();
 
         repository.insert(logEntity);
         Long eventId = repository.findLogId(eventTime);
-        log.info("Log#{} {} Вызван метод: {}: {}{}.", eventId, eventTime, className, methodName, args);
+        log.info("Log#{} {} Вызван метод: {}: {} пользователем {}.", eventId, eventTime, className, methodName, user.getEmail());
 
         Object object = null;
         try {

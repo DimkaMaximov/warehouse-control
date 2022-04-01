@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <title>Admin page</title>
+</head>
+<body>
+<h3 th:inline="text" style="text-transform:uppercase">[[${#httpServletRequest.remoteUser}]] page</h3>
+<p><a th:href="@{/admin/product}">Номенклатура товаров</a></p>
+<p  style="color: gray">* Для отображения данных конкретного товара добавьте id в строке URL. Например: "product/1"</p>
+<p  style="color: gray">* Для отображения данных конкретного вида товаров добавьте type и id в строке URL. Например: "product/type/1"</p>
+<!--<p  style="color: gray">* Для удаления конкретного товара добавьте id и remove в строке URL. Например: "product/1/remove"</p>-->
+<form th:action="@{/logout}" method="post">
+  <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>
