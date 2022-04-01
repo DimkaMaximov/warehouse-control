@@ -13,6 +13,7 @@ public class InitAccount {
 
     /**
      * after init() you can login as:
+     *
      * owner    owner
      * admin    admin
      * user1    password

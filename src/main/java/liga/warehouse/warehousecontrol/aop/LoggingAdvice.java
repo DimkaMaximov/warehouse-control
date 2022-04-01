@@ -27,8 +27,12 @@ public class LoggingAdvice {
     public void controllersPc() {
     }
 
+    @Pointcut("execution(* org.springframework.security.core.userdetails.UserDetailsService.loadUserByUsername(String))")
+    public void userDetailsServicePc() {
+    }
+
     @Around("controllersPc()")
-    public Object controllersLogging(ProceedingJoinPoint pjp){
+    public Object controllersLogging(ProceedingJoinPoint pjp) {
 
         LocalDateTime eventTime = LocalDateTime.now();
         String methodName = pjp.getSignature().getName();
@@ -55,6 +59,39 @@ public class LoggingAdvice {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+        return object;
+    }
+
+    @Around("userDetailsServicePc()")
+    public Object authenticationLogging(ProceedingJoinPoint pjp) {
+
+        LocalDateTime eventTime = LocalDateTime.now();
+        String methodName = pjp.getSignature().getName();
+        String className = pjp.getTarget().getClass().toString();
+        Object[] array = pjp.getArgs();
+        String email = array[0].toString();
+
+        LogEntity logEntity = LogEntity.builder()
+                .eventTime(eventTime)
+                .className(className)
+                .methodName(methodName)
+                .args(email)
+                .build();
+
+        repository.insert(logEntity);
+        Long eventId = repository.findLogId(logEntity.getEventTime());
+
+        Object object = null;
+        try {
+            object = pjp.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        if (object != null) {
+            log.info("Log#{} {} Аутентификация с email: {} завершена успешно", eventId, logEntity.getEventTime(), logEntity.getArgs());
+        } else
+            log.info("Log#{} {} Ошибка аутентификации. Аккаунт с email: {} не зарегистрирован", eventId, logEntity.getEventTime(), logEntity.getArgs());
+
         return object;
     }
 }

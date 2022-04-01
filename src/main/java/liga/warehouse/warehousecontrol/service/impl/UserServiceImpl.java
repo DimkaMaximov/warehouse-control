@@ -18,22 +18,19 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
     private final UserEntityRepository repository;
 
     public UserServiceImpl(UserEntityRepository repository) {
         this.repository = repository;
     }
 
-
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-//    @Bean
-//    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-//        this.passwordEncoder = passwordEncoder;
-//    }
 
     @Autowired
     private ModelMapper modelMapper;
@@ -61,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insert(UserEntityDto userEntityDto) {
         UserEntity userEntity = modelMapper.map(userEntityDto, UserEntity.class);
-//        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         if (userEntity.getId() == null) repository.insert(userEntity);
         else repository.updateById(userEntity);
     }
