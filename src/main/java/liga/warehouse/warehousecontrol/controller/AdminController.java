@@ -14,12 +14,12 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("main/product")
-public class ProductController {
+@RequestMapping("admin/product")
+public class AdminController {
 
     private final ProductService service;
 
-    public ProductController(ProductService service) {
+    public AdminController(ProductService service) {
         this.service = service;
     }
 
@@ -53,6 +53,7 @@ public class ProductController {
         service.deleteById(id);
     }
 
+    //купить или занести товар в корзину в количестве amount
     @PostMapping("/{id}/sale/{amount}")
     void saleProduct(@PathVariable Long id, @PathVariable Long amount) {
         service.saleById(id, amount);

@@ -21,8 +21,10 @@ spring:
     enabled: false
     change-log: db/master.xml
 
-  jpa:
-    open-in-view: false
+#  jpa:
+#    open-in-view: true
+#  main:
+#    allow-bean-definition-overriding: true
 
 mybatis:
   configuration:

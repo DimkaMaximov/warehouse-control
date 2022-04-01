@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="liga.warehouse.warehousecontrol.repository.UserEntityRepository">
+
+    <resultMap id="user" type="liga.warehouse.warehousecontrol.model.UserEntity" autoMapping="true">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="user">
+        SELECT *
+        FROM user_entity ORDER BY id;
+    </select>
+
+    <select id="findById" resultMap="user">
+        SELECT *
+        FROM user_entity
+        WHERE id = #{userId};
+    </select>
+
+    <select id="findByEmail" resultMap="user">
+        SELECT *
+        FROM user_entity
+        WHERE email = #{email};
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO user_entity (email, password, first_name, last_name,
+                                  phone_number, role)
+        VALUES (#{email}, #{password}, #{firstName}, #{lastName},
+                #{phoneNumber}, #{role}::user_role);
+    </insert>
+
+    <update id="updateById" parameterType="liga.warehouse.warehousecontrol.model.UserEntity">
+        <if test="user.id != null">
+            UPDATE user_entity SET
+            <if test="user.email != null">
+                email = #{user.email}
+            </if>
+            <if test="user.password != null">
+                password = #{user.password}
+            </if>
+            <if test="user.firstName != null">
+                first_name = #{user.firstName}
+            </if>
+            <if test="user.lastName != null">
+                last_name = #{user.lastName}
+            </if>
+            <if test="user.phoneNumber != null">
+                phone_number = #{user.phoneNumber}
+            </if>
+            <if test="user.role != null">
+                role = #{user.role}::user_role
+            </if>
+            WHERE id = #{user.id};
+        </if>
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM user_entity
+        WHERE id = #{userId, jdbcType=BIGINT};
+    </delete>
+
+</mapper>
