@@ -21,6 +21,9 @@ spring:
     enabled: false
     change-log: db/master.xml
 
+  jpa:
+    open-in-view: false
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
