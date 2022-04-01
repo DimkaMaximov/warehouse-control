@@ -21,4 +21,6 @@ public interface ProductRepository {
     boolean updateById(@Param("product") Product product);
 
     boolean deleteById(@Param("productId") Long productId);
+
+    boolean saleById(@Param("productId") Long productId, @Param("productAmount") Long productAmount);
 }

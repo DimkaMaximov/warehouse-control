@@ -76,4 +76,11 @@
         FROM product_list
         WHERE id = #{productId, jdbcType=BIGINT};
     </delete>
+
+    <update id="saleById">
+        UPDATE product_list SET amount =
+            ((Select amount From product_list where id = #{productId}) - #{productAmount})
+        WHERE id = #{productId, jdbcType=BIGINT};
+    </update>
+
 </mapper>
