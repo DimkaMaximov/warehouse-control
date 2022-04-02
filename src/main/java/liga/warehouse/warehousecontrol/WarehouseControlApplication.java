@@ -7,7 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WarehouseControlApplication {
 
     /**
-     * after init() you can login as:
+     * 1. Before start app, create and connect "warehouse" database
+     * 2. Execute create_schema.sql in resources
+     *
+     * http://localhost:8090/
+     *
+     * you can login as:
      *
      * owner    owner
      * admin    admin
